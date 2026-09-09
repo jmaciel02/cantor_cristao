@@ -5,9 +5,12 @@
     <!-- Top Hero / Search Section -->
     <div style="margin-bottom: 1.5rem;">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-        <div>
-          <h1 style="font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em;">Cantor Cristão</h1>
-          <p style="font-size: 0.88rem; color: var(--color-text-secondary);">581 hinos tradicionais para louvor e culto</p>
+        <div style="display: flex; align-items: center; gap: 0.85rem;">
+          <img src="/icons/icon-192x192.png" alt="Cantor Cristão" style="width: 46px; height: 46px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);" />
+          <div>
+            <h1 style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2;">Cantor Cristão</h1>
+            <p style="font-size: 0.82rem; color: var(--color-text-secondary);">581 hinos tradicionais para louvor e culto</p>
+          </div>
         </div>
         <div style="display: flex; gap: 6px;">
           <button class="btn-icon" :title="'Alternar Tema'" @click="cycleTheme">
