@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: cantor_cristao_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./frontend/dist:/var/www/frontend/dist:ro
+      - ./backend:/var/www/backend:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+    networks:
+      - cantor_network
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    container_name: cantor_cristao_backend
+    restart: unless-stopped
+    volumes:
+      - ./backend:/var/www/backend
+    environment:
+      APP_NAME: "Cantor Cristao API"
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_URL: "https://${DOMAIN:-localhost}"
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: cantor_cristao
+      DB_USERNAME: cantor_user
+      DB_PASSWORD: cantor_secret_password
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - cantor_network
+
+  mysql:
+    image: mysql:8.0
+    container_name: cantor_cristao_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: cantor_cristao
+      MYSQL_USER: cantor_user
+      MYSQL_PASSWORD: cantor_secret_password
+      MYSQL_ROOT_PASSWORD: root_secret_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - cantor_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: cantor_cristao_redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - cantor_network
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  cantor_network:
+    driver: bridge

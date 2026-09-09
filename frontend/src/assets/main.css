@@ -1,0 +1,905 @@
+/* ==========================================================================
+   CANTOR CRISTÃO PWA — DESIGN SYSTEM (VANILLA CSS)
+   ========================================================================== */
+
+:root {
+  /* Common Brand Tokens */
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-light: rgba(37, 99, 235, 0.12);
+  --color-accent: #f59e0b;
+  --color-danger: #ef4444;
+  --color-success: #10b981;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: 'Georgia', 'Cambria', 'Times New Roman', serif;
+  --font-reading: var(--font-sans);
+  
+  --hymn-font-size: 18px;
+  --hymn-line-height: 1.75;
+  --hymn-stanza-gap: 2rem;
+
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Elevation Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Layout */
+  --header-height: 64px;
+  --nav-height: 64px;
+  --max-content-width: 768px;
+}
+
+/* --------------------------------------------------------------------------
+   THEME PALETTES
+   -------------------------------------------------------------------------- */
+
+/* 1. DARK THEME (DEFAULT - IDEAL FOR LITURGY / SANCTUARY) */
+:root[data-theme='dark'],
+:root:not([data-theme]) {
+  --color-bg: #0b0f19;
+  --color-bg-elevated: #111827;
+  --color-surface: #161f30;
+  --color-surface-hover: #1e293b;
+  --color-surface-active: #283548;
+  --color-border: #1f293d;
+  --color-border-light: rgba(255, 255, 255, 0.08);
+
+  --color-text-primary: #f3f4f6;
+  --color-text-secondary: #9ca3af;
+  --color-text-muted: #6b7280;
+  
+  --color-chorus-bg: rgba(37, 99, 235, 0.08);
+  --color-chorus-border: #3b82f6;
+  --color-badge-bg: rgba(255, 255, 255, 0.06);
+
+  --glass-bg: rgba(17, 24, 39, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+/* 2. LIGHT THEME (WARM, NON-GLARING) */
+:root[data-theme='light'] {
+  --color-bg: #f8fafc;
+  --color-bg-elevated: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f1f5f9;
+  --color-surface-active: #e2e8f0;
+  --color-border: #e2e8f0;
+  --color-border-light: rgba(0, 0, 0, 0.05);
+
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94a3b8;
+
+  --color-chorus-bg: #eff6ff;
+  --color-chorus-border: #2563eb;
+  --color-badge-bg: #f1f5f9;
+
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.08);
+}
+
+/* 3. SEPIA THEME (BOOK / EYE-STRAIN RELIEF) */
+:root[data-theme='sepia'] {
+  --color-bg: #f5eedc;
+  --color-bg-elevated: #ece3cf;
+  --color-surface: #efe6d3;
+  --color-surface-hover: #e5dbca;
+  --color-surface-active: #dacfc0;
+  --color-border: #dcd0bc;
+  --color-border-light: rgba(70, 50, 30, 0.08);
+
+  --color-text-primary: #3b2d1d;
+  --color-text-secondary: #6e5842;
+  --color-text-muted: #9c8369;
+
+  --color-primary: #8b4513;
+  --color-primary-hover: #72380f;
+  --color-primary-light: rgba(139, 69, 19, 0.12);
+
+  --color-chorus-bg: rgba(139, 69, 19, 0.08);
+  --color-chorus-border: #8b4513;
+  --color-badge-bg: #e5dbca;
+
+  --glass-bg: rgba(245, 238, 220, 0.85);
+  --glass-border: rgba(139, 69, 19, 0.15);
+}
+
+/* SENIOR / ACCESSIBILITY MODE OVERRIDES */
+.senior-mode {
+  --hymn-font-size: 24px !important;
+  --hymn-line-height: 1.9 !important;
+  --nav-height: 76px !important;
+  --header-height: 72px !important;
+}
+
+.senior-mode button,
+.senior-mode a,
+.senior-mode input {
+  min-height: 54px !important;
+  font-size: 1.15rem !important;
+}
+
+.senior-mode .hymn-title {
+  font-size: 1.85rem !important;
+}
+
+/* --------------------------------------------------------------------------
+   GLOBAL RESET & FOUNDATION
+   -------------------------------------------------------------------------- */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-size: 16px;
+  line-height: 1.5;
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  overflow-x: hidden;
+  user-select: text;
+  display: flex;
+  flex-direction: column;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --------------------------------------------------------------------------
+   LAYOUT UTILITIES
+   -------------------------------------------------------------------------- */
+
+.app-container {
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 1rem;
+  flex: 1;
+}
+
+.page-wrapper {
+  padding-top: calc(var(--header-height) + 1rem);
+  padding-bottom: calc(var(--nav-height) + 2rem);
+  min-height: 100vh;
+}
+
+/* Clean Top App Header */
+.top-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem;
+  transition: transform var(--transition-base), background var(--transition-fast);
+}
+
+.top-header.hidden {
+  transform: translateY(-100%);
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--color-text-primary);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.brand-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--color-primary), #3b82f6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px var(--color-primary-light);
+}
+
+/* Header Action Buttons */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-icon {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--color-text-secondary);
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-icon:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+}
+
+.btn-icon:active {
+  transform: scale(0.92);
+}
+
+.btn-icon.active {
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+/* --------------------------------------------------------------------------
+   BOTTOM NAVIGATION (NATIVE FEEL)
+   -------------------------------------------------------------------------- */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  transition: transform var(--transition-base);
+}
+
+.bottom-nav.hidden {
+  transform: translateY(100%);
+}
+
+.nav-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 100%;
+  text-decoration: none;
+  color: var(--color-text-secondary);
+  font-size: 0.72rem;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  position: relative;
+}
+
+.nav-tab svg {
+  width: 22px;
+  height: 22px;
+  stroke-width: 2;
+  transition: transform var(--transition-fast), stroke var(--transition-fast);
+}
+
+.nav-tab:hover {
+  color: var(--color-text-primary);
+}
+
+.nav-tab.router-link-active {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.nav-tab.router-link-active svg {
+  transform: translateY(-2px);
+}
+
+.nav-tab.router-link-active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 24px;
+  height: 3px;
+  background: var(--color-primary);
+  border-radius: 0 0 var(--radius-full) var(--radius-full);
+}
+
+/* --------------------------------------------------------------------------
+   SEARCH BAR & INPUTS
+   -------------------------------------------------------------------------- */
+
+.search-box-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1.25rem;
+}
+
+.search-input {
+  width: 100%;
+  height: 52px;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0 3rem 0 3.25rem;
+  font-size: 1.05rem;
+  color: var(--color-text-primary);
+  outline: none;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+.search-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px var(--color-primary-light);
+  background: var(--color-bg-elevated);
+}
+
+.search-icon-prefix {
+  position: absolute;
+  left: 1.15rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-clear-btn:hover {
+  color: var(--color-text-primary);
+  background: var(--color-surface-hover);
+}
+
+/* --------------------------------------------------------------------------
+   HYMN CARDS & LIST ITEMS
+   -------------------------------------------------------------------------- */
+
+.hymn-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  margin-bottom: 0.6rem;
+  text-decoration: none;
+  color: inherit;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.hymn-card:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.hymn-card:active {
+  transform: scale(0.99);
+}
+
+.hymn-number-badge {
+  min-width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hymn-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.hymn-title-text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0.2rem;
+}
+
+.hymn-firstline-text {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hymn-category-tag {
+  font-size: 0.72rem;
+  padding: 3px 8px;
+  background: var(--color-badge-bg);
+  border-radius: var(--radius-full);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   HYMN READER VIEW
+   -------------------------------------------------------------------------- */
+
+.reader-container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1rem 0 4rem;
+}
+
+.reader-meta-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.reader-hymn-number {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+.reader-hymn-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.reader-hymn-credits {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+/* Lyrics & Stanzas */
+.lyrics-body {
+  font-family: var(--font-reading);
+  font-size: var(--hymn-font-size);
+  line-height: var(--hymn-line-height);
+  color: var(--color-text-primary);
+}
+
+.stanza-block {
+  margin-bottom: var(--hymn-stanza-gap);
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.stanza-number {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.stanza-line {
+  margin-bottom: 0.25rem;
+}
+
+/* Highlighted Chorus Box */
+.chorus-block {
+  background: var(--color-chorus-bg);
+  border-left: 4px solid var(--color-chorus-border);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 1.15rem 1.25rem;
+  margin: var(--hymn-stanza-gap) 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.chorus-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* Reader Floating Control Bar */
+.reader-controls-bar {
+  position: fixed;
+  bottom: calc(var(--nav-height) + 1rem);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: var(--shadow-lg);
+  z-index: 90;
+  transition: transform var(--transition-base), opacity var(--transition-fast);
+}
+
+.reader-controls-bar.cult-mode {
+  bottom: 2rem;
+}
+
+.font-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-primary);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.font-btn:hover {
+  background: var(--color-surface-hover);
+}
+
+.controls-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--color-border);
+}
+
+/* Prev / Next Navigation Bar */
+.hymn-navigation-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+  gap: 1rem;
+}
+
+.nav-hymn-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--color-text-primary);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all var(--transition-fast);
+}
+
+.nav-hymn-btn:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-primary);
+}
+
+.nav-hymn-btn.next {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+/* --------------------------------------------------------------------------
+   MODO CULTO (IMMERSIVE FULLSCREEN MODE)
+   -------------------------------------------------------------------------- */
+
+.cult-mode-active .top-header,
+.cult-mode-active .bottom-nav {
+  display: none !important;
+}
+
+.cult-mode-active .page-wrapper {
+  padding-top: 2rem;
+  padding-bottom: 5rem;
+}
+
+.cult-exit-btn {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 8px 14px;
+  color: var(--color-text-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  z-index: 120;
+  box-shadow: var(--shadow-md);
+}
+
+/* --------------------------------------------------------------------------
+   QUICK JUMP FLOATING ACTION BUTTON & MODAL
+   -------------------------------------------------------------------------- */
+
+.quick-jump-fab {
+  position: fixed;
+  right: 1.25rem;
+  bottom: calc(var(--nav-height) + 1.25rem);
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--color-primary), #1d4ed8);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 80;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: -0.02em;
+  transition: all var(--transition-fast);
+}
+
+.quick-jump-fab:hover {
+  transform: scale(1.06) translateY(-2px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.5);
+}
+
+.quick-jump-fab:active {
+  transform: scale(0.95);
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-card {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 1.75rem;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: var(--shadow-xl);
+  animation: modalEnter 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.modal-desc {
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.numpad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+
+.numpad-btn {
+  height: 52px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.numpad-btn:hover {
+  background: var(--color-surface-hover);
+}
+
+.numpad-btn:active {
+  background: var(--color-primary-light);
+  transform: scale(0.95);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-primary {
+  flex: 1;
+  height: 48px;
+  background: var(--color-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.btn-secondary {
+  height: 48px;
+  padding: 0 1.25rem;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   INSTALL PWA BANNER
+   -------------------------------------------------------------------------- */
+
+.install-banner {
+  background: linear-gradient(135deg, var(--color-primary), #1d4ed8);
+  color: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 1.15rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
+}
+
+.install-banner-text h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.install-banner-text p {
+  font-size: 0.82rem;
+  opacity: 0.9;
+}
+
+.install-banner-btn {
+  background: #ffffff;
+  color: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 8px 16px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE ADJUSTMENTS
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 768px) {
+  :root {
+    --max-content-width: 840px;
+    --hymn-font-size: 20px;
+  }
+
+  .bottom-nav {
+    max-width: 480px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: var(--radius-full);
+    bottom: 1rem;
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .quick-jump-fab {
+    right: calc(50% - 380px);
+    bottom: 2rem;
+  }
+}
