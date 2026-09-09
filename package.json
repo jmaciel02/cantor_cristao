@@ -1,0 +1,11 @@
+{
+  "name": "cantor-cristao",
+  "version": "1.0.0",
+  "description": "Cantor Cristão PWA",
+  "scripts": {
+    "deploy": "node scripts/deploy-ftp.js"
+  },
+  "dependencies": {
+    "basic-ftp": "^6.2.1"
+  }
+}
