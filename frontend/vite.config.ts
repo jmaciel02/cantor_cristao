@@ -11,11 +11,12 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icons/*.svg', 'icons/*.png'],
       manifest: {
+        id: '/',
         name: 'Cantor Cristão — Hinário Oficial',
         short_name: 'Cantor Cristão',
         description: 'Hinário Cantor Cristão completo com 581 hinos tradicionais, busca instantânea, modo culto e 100% offline.',
-        theme_color: '#2563eb',
-        background_color: '#0b0f19',
+        theme_color: '#0b1329',
+        background_color: '#0b1329',
         display: 'standalone',
         orientation: 'portrait-primary',
         scope: '/',
@@ -25,18 +26,26 @@ export default defineConfig({
           {
             src: '/icons/icon-192x192.png',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png',
+            purpose: 'any'
           },
           {
-            src: '/icons/icon-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
+            src: '/icons/icon-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'maskable'
           },
           {
             src: '/icons/icon-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any maskable'
+            purpose: 'any'
+          },
+          {
+            src: '/icons/icon-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable'
           }
         ]
       },
